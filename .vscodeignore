@@ -1,0 +1,15 @@
+.vscode/**
+src/**
+webview-ui/**
+scripts/**
+node_modules/**
+**/*.map
+**/*.ts
+esbuild.mjs
+vitest.config.ts
+tsconfig.json
+package-lock.json
+yarn.lock
+.gitignore
+.api-debugger/**
+*.vsix

@@ -1,0 +1,246 @@
+{
+  "name": "api-debugger",
+  "displayName": "API Debugger",
+  "description": "Postman-style REST client inside VS Code: compose requests, switch environments, keep history and collections.",
+  "version": "0.1.0",
+  "publisher": "ID-wj",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other",
+    "Testing"
+  ],
+  "keywords": [
+    "rest",
+    "http",
+    "api",
+    "postman",
+    "client",
+    "debug"
+  ],
+  "activationEvents": [
+    "onView:apiDebugger.environment",
+    "onView:apiDebugger.collections",
+    "onView:apiDebugger.history",
+    "onCommand:apiDebugger.openPanel",
+    "onCommand:apiDebugger.importCurl",
+    "onCommand:apiDebugger.exportCurl"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "apiDebugger.openPanel",
+        "title": "Open Request Panel",
+        "category": "API Debugger",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "apiDebugger.sendRequest",
+        "title": "Send Request",
+        "category": "API Debugger"
+      },
+      {
+        "command": "apiDebugger.refresh",
+        "title": "Refresh",
+        "category": "API Debugger",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "apiDebugger.clearHistory",
+        "title": "Clear History",
+        "category": "API Debugger",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "apiDebugger.selectEnvironment",
+        "title": "Select Environment",
+        "category": "API Debugger",
+        "icon": "$(symbol-variable)"
+      },
+      {
+        "command": "apiDebugger.openHistoryEntry",
+        "title": "Open History Entry",
+        "category": "API Debugger"
+      },
+      {
+        "command": "apiDebugger.openSavedRequest",
+        "title": "Open Saved Request",
+        "category": "API Debugger"
+      },
+      {
+        "command": "apiDebugger.deleteHistoryEntry",
+        "title": "Delete History Entry",
+        "category": "API Debugger",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "apiDebugger.deleteSavedRequest",
+        "title": "Delete Saved Request",
+        "category": "API Debugger",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "apiDebugger.importCurl",
+        "title": "Import from cURL",
+        "category": "API Debugger",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "apiDebugger.exportCurl",
+        "title": "Export as cURL",
+        "category": "API Debugger",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "apiDebugger.copyAsCurl",
+        "title": "Copy as cURL",
+        "category": "API Debugger"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "apiDebugger",
+          "title": "API Debugger",
+          "icon": "media/api-debugger.svg"
+        }
+      ]
+    },
+    "views": {
+      "apiDebugger": [
+        {
+          "id": "apiDebugger.environment",
+          "name": "Environment"
+        },
+        {
+          "id": "apiDebugger.collections",
+          "name": "Collections"
+        },
+        {
+          "id": "apiDebugger.history",
+          "name": "History"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "apiDebugger.openPanel",
+          "when": "view == apiDebugger.history || view == apiDebugger.collections || view == apiDebugger.environment",
+          "group": "navigation@1"
+        },
+        {
+          "command": "apiDebugger.selectEnvironment",
+          "when": "view == apiDebugger.environment",
+          "group": "navigation@2"
+        },
+        {
+          "command": "apiDebugger.importCurl",
+          "when": "view == apiDebugger.history || view == apiDebugger.collections || view == apiDebugger.environment",
+          "group": "navigation@3"
+        },
+        {
+          "command": "apiDebugger.refresh",
+          "when": "view == apiDebugger.history || view == apiDebugger.collections || view == apiDebugger.environment",
+          "group": "navigation@4"
+        },
+        {
+          "command": "apiDebugger.clearHistory",
+          "when": "view == apiDebugger.history",
+          "group": "navigation@5"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "apiDebugger.openPanel",
+          "when": "!activeWebviewPanelId",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "apiDebugger.deleteHistoryEntry",
+          "when": "view == apiDebugger.history && viewItem == historyEntry",
+          "group": "inline"
+        },
+        {
+          "command": "apiDebugger.copyAsCurl",
+          "when": "view == apiDebugger.history && viewItem == historyEntry",
+          "group": "1_copy"
+        },
+        {
+          "command": "apiDebugger.deleteSavedRequest",
+          "when": "view == apiDebugger.collections && viewItem == savedRequest",
+          "group": "inline"
+        },
+        {
+          "command": "apiDebugger.copyAsCurl",
+          "when": "view == apiDebugger.collections && viewItem == savedRequest",
+          "group": "1_copy"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "API Debugger",
+      "properties": {
+        "api-debugger.timeout": {
+          "type": "number",
+          "default": 30000,
+          "minimum": 1000,
+          "description": "Timeout for a single request, in milliseconds."
+        },
+        "api-debugger.followRedirects": {
+          "type": "boolean",
+          "default": true,
+          "description": "Follow HTTP 3xx redirects automatically."
+        },
+        "api-debugger.maxHistory": {
+          "type": "number",
+          "default": 200,
+          "minimum": 10,
+          "description": "Maximum number of request history entries to keep."
+        },
+        "api-debugger.storageDir": {
+          "type": "string",
+          "default": ".api-debugger",
+          "description": "Directory, relative to the workspace root, where collections, history and environments are stored."
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "apiDebugger.sendRequest",
+        "key": "ctrl+enter",
+        "mac": "cmd+enter",
+        "when": "activeWebviewPanelId == 'apiDebugger.request'"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "node esbuild.mjs --production && npm run build:webview",
+    "build:webview": "vite build --config webview-ui/vite.config.ts",
+    "watch": "node esbuild.mjs --watch",
+    "watch:webview": "vite build --config webview-ui/vite.config.ts --watch",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "mock": "node scripts/mock-server.mjs",
+    "package": "vsce package --no-dependencies",
+    "publish": "vsce publish --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/vscode": "^1.90.0",
+    "@vitejs/plugin-vue": "^4.6.2",
+    "@vscode/vsce": "^2.32.0",
+    "esbuild": "^0.21.5",
+    "typescript": "^5.5.4",
+    "vite": "^4.5.3",
+    "vitest": "^0.34.6",
+    "vue": "^3.4.38"
+  }
+}
