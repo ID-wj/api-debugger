@@ -6,6 +6,14 @@
   "publisher": "ID-wj",
   "license": "MIT",
   "icon": "media/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ID-wj/api-debugger.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ID-wj/api-debugger/issues"
+  },
+  "homepage": "https://github.com/ID-wj/api-debugger#readme",
   "engines": {
     "vscode": "^1.90.0"
   },
